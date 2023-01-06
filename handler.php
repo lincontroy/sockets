@@ -88,8 +88,9 @@ class ChatHandler {
 		return $chatMessage;
 	}
     function sendbalance($client,$balance) {
+
 		$message = $balance;
-		$messageArray = array('balance'=>$message,'message_type'=>'new_balance');
+		$messageArray = array('balance'=>$message,'client'=>$client);
 		$ACK = $this->seal(json_encode($messageArray));
 		return $ACK;
 	}

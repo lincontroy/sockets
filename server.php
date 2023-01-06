@@ -1,11 +1,18 @@
 <?php
 
 $payments = file_get_contents('php://input');
+define('HOST_NAME',"localhost"); 
+define('PORT',"8090");
+$null = NULL;
+require_once("handler.php");
 
 $payments=json_decode($payments,true);
 
+$chatHandler = new ChatHandler();
+// $new_balance=0;
 if(isset($payments)){
 
+    
     $mobile= $payments['mssidn'];
 
     $amount=$payments['amount'];
@@ -15,13 +22,18 @@ if(isset($payments)){
     $balance=50;
 
     $new_balance=$amount+$balance;
-}
 
-define('HOST_NAME',"localhost"); 
-define('PORT',"8090");
-$null = NULL;
-require_once("handler.php");
-$chatHandler = new ChatHandler();
+
+        $socketResource = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        socket_set_option($socketResource, SOL_SOCKET, SO_REUSEADDR, 1);
+        socket_bind($socketResource, 0, PORT);
+        socket_listen($socketResource);
+
+        $clientSocketArray = array($socketResource);
+
+        socket_close($socketResource);
+}else{
+  
 
 $socketResource = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
 socket_set_option($socketResource, SOL_SOCKET, SO_REUSEADDR, 1);
@@ -58,6 +70,8 @@ while (true) {
             // $chat_box_message = $chatHandler->createChatBoxMessage($messageObj->chat_user, $messageObj->whenever);
 			//check the message sender
 
+            
+
             if(isset($messageObj->client)){
                 //send message back with client balance
 
@@ -88,3 +102,4 @@ while (true) {
 	}
 }
 socket_close($socketResource);
+}
