@@ -13,16 +13,15 @@ $chatHandler = new ChatHandler();
 if(isset($payments)){
 
     
-    $mobile= $payments['mssidn'];
+        $mobile= $payments['mssidn'];
 
-    $amount=$payments['amount'];
-    
-    $transaction=$payments['transaction'];
+        $amount=$payments['amount'];
+        
+        $transaction=$payments['transaction'];
 
-    $balance=50;
+        $balance=50;
 
-    $new_balance=$amount+$balance;
-
+        $new_balance=$amount+$balance;
 
         $socketResource = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
         socket_set_option($socketResource, SOL_SOCKET, SO_REUSEADDR, 1);
@@ -51,6 +50,7 @@ if(isset($payments)){
                 $chatHandler->send($connectionACK);
                 
                 $newSocketIndex = array_search($socketResource, $newSocketArray);
+
                 unset($newSocketArray[$newSocketIndex]);
 
             }
