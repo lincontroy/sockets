@@ -68,10 +68,13 @@ class ChatHandler {
 	}
 	
 	function newConnectionACK($client_ip_address) {
+
+		// $client_ip_address=$_SERVER['REQUEST_URI'];
 		$message = 'New client ' . $client_ip_address.' joined';
 		$messageArray = array('message'=>$message,'message_type'=>'chat-connection-ack');
 		$ACK = $this->seal(json_encode($messageArray));
 		return $ACK;
+		
 	}
 	
 	function connectionDisconnectACK($client_ip_address) {
